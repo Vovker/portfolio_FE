@@ -6,7 +6,9 @@ import {
   Mesh,
   MeshBasicMaterial,
   Object3D,
-  PlaneGeometry, Sprite, SpriteMaterial,
+  PlaneGeometry,
+  Sprite,
+  SpriteMaterial,
   TextureLoader,
   Vector3
 } from 'three';
@@ -44,7 +46,7 @@ class SpherePoint {
     this.pointGroup.add(mesh);
     this.createLightPillar();
     this.renderComponentLabel().then((data) => this.pointGroup.add(data));
-    console.log(this.pointGroup)
+    console.log(this.pointGroup);
   }
   private createPointMesh(options: Pick<IPointMeshOptions, 'material'>) {
     const geometry = new BufferGeometry();
@@ -84,8 +86,8 @@ class SpherePoint {
   }
   private async renderComponentLabel(): Promise<Object3D> {
     const container = document.createElement('div');
-    ReactDOM.createRoot(container).render(<SpherePointLabel/>)
-    console.log(container)
+    ReactDOM.createRoot(container).render(<SpherePointLabel />);
+    console.log(container);
     const opts = {
       backgroundColor: '#FFFFFF',
       scale: 6,
@@ -93,23 +95,23 @@ class SpherePoint {
     };
 
     document.body.appendChild(container);
-    console.log(container)
+    console.log(container);
     const canvas = await html2canvas(container, opts);
-    console.log(canvas)
-    const dataURL = canvas.toDataURL("image/png");
-    console.log(dataURL)
+    console.log(canvas);
+    const dataURL = canvas.toDataURL('image/png');
+    console.log(dataURL);
     const map = new TextureLoader().load(dataURL);
     const material = new SpriteMaterial({
       map: map,
-      transparent: true,
+      transparent: true
     });
-    console.log(dataURL)
+    console.log(dataURL);
     const sprite = new Sprite(material);
-    console.log(sprite)
+    console.log(sprite);
     const len = 5 + (this.name.length - 2) * 2;
     sprite.scale.set(len, 3, 1);
-    sprite.position.set(this.vector.x * 1.1, this.vector.y *1.1, this.vector.z * 1.1);
-    return sprite
+    sprite.position.set(this.vector.x * 1.1, this.vector.y * 1.1, this.vector.z * 1.1);
+    return sprite;
   }
 
   public calcVector = (R: number, longitude: number, latitude: number): Vector3 => {

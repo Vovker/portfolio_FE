@@ -1,9 +1,6 @@
-
 interface ILabelTypes {
-    posX: number;
-    posY: number
+  posX: number;
+  posY: number;
 }
 
-export type {
-    ILabelTypes
-}
+export type { ILabelTypes };

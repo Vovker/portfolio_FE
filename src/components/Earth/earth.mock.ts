@@ -1,4 +1,3 @@
-
 const mock = [
   {
     name: 'Warsaw',
