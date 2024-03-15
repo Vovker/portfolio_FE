@@ -42,7 +42,7 @@ const Earth = () => {
 
   return (
     <>
-      <div ref={ref}></div>
+      <div style={{ position: 'relative' }} ref={ref}></div>
     </>
   );
 };

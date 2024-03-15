@@ -8,6 +8,8 @@ import {
   PointsMaterial,
   Scene,
   SphereGeometry,
+  Sprite,
+  SpriteMaterial,
   TextureLoader,
   WebGLRenderer
 } from 'three';
@@ -15,7 +17,8 @@ import {
 // @ts-expect-error
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import earthMapImg from '../../assets/earth/earth.jpg';
-import SpherePoint from './SpherePoint/SpherePoint.ts';
+import glowImg from '../../assets/earth/glow.png';
+import SpherePoint from './SpherePoint/SpherePoint.tsx';
 
 class Earth3D {
   public options: IEarthOptions;
@@ -39,6 +42,7 @@ class Earth3D {
     this.camera.position.z = options.baseCamera.cameraPos;
 
     this.renderMainSphere();
+    this.createEarthGlow();
     this.renderPoints();
     const animate = () => {
       requestAnimationFrame(animate);
@@ -60,20 +64,36 @@ class Earth3D {
     animate();
   }
 
+  private createEarthGlow() {
+    const texture = new TextureLoader().load(glowImg);
+
+    const spriteMaterial = new SpriteMaterial({
+      map: texture,
+      color: 0x4390d1,
+      transparent: true,
+      opacity: 0.7,
+      depthWrite: false
+    });
+
+    const sprite = new Sprite(spriteMaterial);
+    sprite.scale.set(this.options.earth.radius * 3.5, this.options.earth.radius * 3.5, 2);
+    this.mainGroup.add(sprite);
+  }
+
   private renderMainSphere() {
-    const geometry = new SphereGeometry(this.options.earth.radius, 100, 100);
+    const geometry = new SphereGeometry(this.options.earth.radius, 300, 300);
     const textureLoader = new TextureLoader();
     const earthTexture = textureLoader.load(earthMapImg);
     const material = new MeshBasicMaterial({ map: earthTexture });
     const sphere = new Mesh(geometry, material);
-    const sphereBorder = new SphereGeometry(this.options.earth.backgroundParticlesRadius, 100, 100);
+    const sphereBorder = new SphereGeometry(this.options.earth.backgroundParticlesRadius, 200, 50);
     const pointMaterial = new PointsMaterial({
       color: 0x81ffff,
       transparent: true,
       sizeAttenuation: true,
-      opacity: 0.1,
+      opacity: 0.03,
       vertexColors: false,
-      size: 0.01
+      size: 0.008
     });
     const points = new Points(sphereBorder, pointMaterial);
     this.mainGroup.add(sphere);
@@ -82,7 +102,10 @@ class Earth3D {
 
   private renderPoints() {
     this.options.data.forEach((point) => {
-      const renderedPoint = new SpherePoint(point);
+      const renderedPoint = new SpherePoint({
+        ...point,
+        R: this.options.earth.radius
+      });
       renderedPoint.addToGroup(this.mainGroup);
     });
   }

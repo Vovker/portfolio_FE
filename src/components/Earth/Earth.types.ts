@@ -1,4 +1,3 @@
-import { ISpherePoint } from './SpherePoint/SpherePoint.types.ts';
 import { Group, PerspectiveCamera, Texture, WebGLRenderer } from 'three';
 
 interface IEarth {
@@ -9,7 +8,11 @@ interface IEarth {
   renderer: WebGLRenderer;
 }
 interface IEarthOptions {
-  data: ISpherePoint[];
+  data: {
+    L: number;
+    N: number;
+    name: string;
+  }[];
   textures: Record<string, Texture>;
   earth: {
     radius: number;
