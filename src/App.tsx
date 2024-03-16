@@ -1,11 +1,12 @@
-import './App.css';
-import Earth from './components/Earth/Earth.tsx';
+import { ThemeProvider } from 'styled-components';
+import theme from '@/theme';
+import AppWrapperStyled from '@components/common/AppWrapper/AppWrapper.styled';
 
 function App() {
   return (
-    <>
-      <Earth />
-    </>
+    <ThemeProvider theme={theme}>
+      <AppWrapperStyled></AppWrapperStyled>
+    </ThemeProvider>
   );
 }
 
